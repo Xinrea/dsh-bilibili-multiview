@@ -4,7 +4,7 @@
 
 DSH 插件：在 DeepSeek Harness 的侧边栏「自动任务」下面增加一个 **bilibili 直播** 页面，以 Niri 风格管理多个直播窗口。
 
-> 仓库名：`dsh-bilibili-multiview`。插件包 ID 保持为 `@local/dsh-bilibili-live`，以保证已安装实例的 Slot 和 Client 模块 id 稳定。
+> 仓库名、包 ID、Client 模块 id 与 Host 路由均为 `dsh-bilibili-multiview`；侧边栏显示名保持「bilibili 直播」。
 
 - 直播间列表可折叠：用快捷键切换/移动窗口时自动收起；也可点击播放区左上角按钮展开/收起
 - 添加 / 移除直播间、账号 Cookie 设置、封面通过 Host 同源图片代理加载
@@ -55,7 +55,7 @@ $DSH_HOME/bili/cookies.json
 ```
 
 页面、客户端插件、其它插件都拿不到 Cookie 内容；浏览器只调用同源的
-`/bilibili-live/api/*` 代理。已有的同名文件会被直接复用。
+`/bilibili-multiview/api/*` 代理。已有的同名文件会被直接复用。
 
 登录 Cookie 用于账号信息、更高画质和弹幕身份；未设置 Cookie 时仍可匿名观看和
 接收弹幕。
@@ -66,17 +66,17 @@ Host 半在 DSH Web 服务上注册一个前缀路由：
 
 | 路由 | 作用 |
 | --- | --- |
-| `GET /bilibili-live/vendor/mpegts.js` | 本地 mpegts.js 运行时 |
-| `GET /bilibili-live/api/session` | 账号概要 |
-| `POST /bilibili-live/api/session` | 校验并保存 Cookie |
-| `DELETE /bilibili-live/api/session` | 清除 Cookie |
-| `POST /bilibili-live/api/room` | 添加 / 查询单个直播间 |
-| `POST /bilibili-live/api/rooms` | 批量刷新 |
-| `POST /bilibili-live/api/play` | 获取 FLV 播放地址 |
-| `POST /bilibili-live/api/danmu` | 获取弹幕 WS 主机与 token（诊断用） |
-| `GET /bilibili-live/api/danmu/events?room=…` | SSE 弹幕流（页面实际使用） |
-| `GET /bilibili-live/api/image?u=…` | 封面/关键帧/头像同源代理 |
-| `GET /bilibili-live/api/stream?u=…` | CDN 拒绝页面 Origin 时的同源回退 |
+| `GET /bilibili-multiview/vendor/mpegts.js` | 本地 mpegts.js 运行时 |
+| `GET /bilibili-multiview/api/session` | 账号概要 |
+| `POST /bilibili-multiview/api/session` | 校验并保存 Cookie |
+| `DELETE /bilibili-multiview/api/session` | 清除 Cookie |
+| `POST /bilibili-multiview/api/room` | 添加 / 查询单个直播间 |
+| `POST /bilibili-multiview/api/rooms` | 批量刷新 |
+| `POST /bilibili-multiview/api/play` | 获取 FLV 播放地址 |
+| `POST /bilibili-multiview/api/danmu` | 获取弹幕 WS 主机与 token（诊断用） |
+| `GET /bilibili-multiview/api/danmu/events?room=…` | SSE 弹幕流（页面实际使用） |
+| `GET /bilibili-multiview/api/image?u=…` | 封面/关键帧/头像同源代理 |
+| `GET /bilibili-multiview/api/stream?u=…` | CDN 拒绝页面 Origin 时的同源回退 |
 
 ## 实现说明
 

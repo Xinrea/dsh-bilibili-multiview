@@ -30,27 +30,27 @@ async function post(path, body) {
 }
 
 try {
-  const session = await fetch(`${base}/bilibili-live/api/session`).then((r) => r.json())
+  const session = await fetch(`${base}/bilibili-multiview/api/session`).then((r) => r.json())
   console.log('session:', session.ok, session.hasCookie, session.account?.authenticated, session.account?.uname, session.account?.uid)
 
-  const add = await post('/bilibili-live/api/room', { id: '6' })
+  const add = await post('/bilibili-multiview/api/room', { id: '6' })
   console.log('room:', add.ok, add.room?.id, add.room?.liveStatus, add.room?.uname, add.room?.title?.slice(0, 20))
 
-  const rooms = await post('/bilibili-live/api/rooms', { ids: [add.room.id] })
+  const rooms = await post('/bilibili-multiview/api/rooms', { ids: [add.room.id] })
   console.log('rooms:', rooms.ok, rooms.rooms?.[0]?.ok, rooms.rooms?.[0]?.room?.liveStatus)
 
-  const play = await post('/bilibili-live/api/play', { id: add.room.id, qn: 10000 })
+  const play = await post('/bilibili-multiview/api/play', { id: add.room.id, qn: 10000 })
   console.log('play:', play.ok, play.live, play.qn, play.unsupported, play.urls?.length, play.qualities?.slice(0, 3))
 
-  const danmu = await post('/bilibili-live/api/danmu', { id: add.room.id })
+  const danmu = await post('/bilibili-multiview/api/danmu', { id: add.room.id })
   console.log('danmu:', danmu.ok, danmu.hosts?.length, Boolean(danmu.token), danmu.uid, danmu.roomId)
 
-  const vendor = await fetch(`${base}/bilibili-live/vendor/mpegts.js`)
+  const vendor = await fetch(`${base}/bilibili-multiview/vendor/mpegts.js`)
   console.log('vendor:', vendor.status, vendor.headers.get('content-type'), (await vendor.text()).length)
 
   if (play.urls?.length) {
     const controller = new AbortController()
-    const response = await fetch(`${base}/bilibili-live/api/stream?u=${encodeURIComponent(play.urls[0])}`, {
+    const response = await fetch(`${base}/bilibili-multiview/api/stream?u=${encodeURIComponent(play.urls[0])}`, {
       signal: controller.signal,
     })
     const reader = response.body.getReader()
@@ -60,7 +60,7 @@ try {
     await reader.cancel().catch(() => {})
   }
 
-  const bad = await post('/bilibili-live/api/room', { id: 'https://example.com/not-a-room' })
+  const bad = await post('/bilibili-multiview/api/room', { id: 'https://example.com/not-a-room' })
   console.log('bad:', bad.ok, bad.error)
 } finally {
   await new Promise((resolve) => server.close(resolve))

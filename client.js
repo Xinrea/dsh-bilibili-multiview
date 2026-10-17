@@ -1,5 +1,5 @@
 window.__ModuleLoader__.load({
-  id: '@local/dsh-bilibili-live',
+  id: 'dsh-bilibili-multiview',
   factory(require) {
     const React = require('react')
     const h = React.createElement
@@ -11,11 +11,12 @@ window.__ModuleLoader__.load({
       useState,
     } = React
 
-    const NS = 'bilibili-live'
-    const API_ROOT = '/bilibili-live/api'
-    const VENDOR_PATH = '/bilibili-live/vendor/mpegts.js'
-    const PROXY_PATH = '/bilibili-live/api/stream?u='
-    const STORE_KEY = 'dsh.bilibili-live.v1'
+    const NS = 'bilibili-multiview'
+    const API_ROOT = '/bilibili-multiview/api'
+    const VENDOR_PATH = '/bilibili-multiview/vendor/mpegts.js'
+    const PROXY_PATH = '/bilibili-multiview/api/stream?u='
+    const STORE_KEY = 'dsh.bilibili-multiview.v1'
+    const LEGACY_STORE_KEY = 'dsh.bilibili-live.v1'
     const GAP = 18
     const STACK_GAP = 10
     const DUCK_FACTOR = 0.2
@@ -300,7 +301,7 @@ window.__ModuleLoader__.load({
       }
       if (mpegtsPromise) return mpegtsPromise
       mpegtsPromise = new Promise((resolve, reject) => {
-        const existing = document.querySelector(`script[data-bilibili-live-vendor="mpegts"]`)
+        const existing = document.querySelector(`script[data-bilibili-multiview-vendor="mpegts"]`)
         const script = existing || document.createElement('script')
         script.dataset.bilibiliLiveVendor = 'mpegts'
         script.async = true
@@ -327,7 +328,7 @@ window.__ModuleLoader__.load({
         const url = new URL(target, window.location.href)
         const host = url.hostname.toLowerCase()
         if (['hdslb.com', 'bilibili.com'].some((suffix) => host === suffix || host.endsWith(`.${suffix}`))) {
-          return `/bilibili-live/api/image?u=${encodeURIComponent(target)}`
+          return `/bilibili-multiview/api/image?u=${encodeURIComponent(target)}`
         }
       } catch {
         /* leave non-URL strings untouched */
@@ -360,7 +361,7 @@ window.__ModuleLoader__.load({
         const open = () => {
           if (closed) return
           try {
-            source = new EventSource(`/bilibili-live/api/danmu/events?room=${encodeURIComponent(roomId)}`)
+            source = new EventSource(`/bilibili-multiview/api/danmu/events?room=${encodeURIComponent(roomId)}`)
           } catch {
             retryTimer = window.setTimeout(open, 3000)
             return
@@ -1617,7 +1618,8 @@ window.__ModuleLoader__.load({
         railCollapsed: false,
       }
       try {
-        const parsed = JSON.parse(localStorage.getItem(STORE_KEY) || 'null')
+        const rawStore = localStorage.getItem(STORE_KEY) || localStorage.getItem(LEGACY_STORE_KEY)
+        const parsed = JSON.parse(rawStore || 'null')
         if (!parsed || typeof parsed !== 'object') return fallback
         const rooms = Array.isArray(parsed.rooms)
           ? parsed.rooms.filter((room) => room && typeof room.id === 'string' && /^\d+$/.test(room.id))
@@ -2323,7 +2325,7 @@ window.__ModuleLoader__.load({
       return h(
         React.Fragment,
         null,
-        h('style', { key: 'bilibili-live-style' }, CSS),
+        h('style', { key: 'bilibili-multiview-style' }, CSS),
         h(
           'div',
           { className: cx('bl-page', railCollapsed ? 'is-rail-collapsed' : null) },
@@ -2869,7 +2871,7 @@ window.__ModuleLoader__.load({
             zh,
             en,
           }),
-        'bilibili-live: dictionaries',
+        'bilibili-multiview: dictionaries',
       )
       const t = ctx.locale.bind(NS)
 
@@ -2877,7 +2879,7 @@ window.__ModuleLoader__.load({
         ctx.slots.register(
           {
             name: 'sidebar.panellist',
-            id: 'bilibili-live',
+            id: 'bilibili-multiview',
             order: 11,
             locale: NS,
             label: () => t('panel'),
@@ -2890,7 +2892,7 @@ window.__ModuleLoader__.load({
         ctx.slots.register(
           {
             name: 'main',
-            key: 'bilibili-live',
+            key: 'bilibili-multiview',
             locale: NS,
             inject: () => ({ t, locale: ctx.locale }),
           },

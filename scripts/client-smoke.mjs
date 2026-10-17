@@ -10,7 +10,7 @@ globalThis.window = {
   },
 }
 await import('../client.js')
-assert.equal(moduleId, '@local/dsh-bilibili-live')
+assert.equal(moduleId, 'dsh-bilibili-multiview')
 assert.equal(typeof factory, 'function')
 const React = {
   createElement(tag, props, ...children) { return { tag, props, children } },
@@ -50,9 +50,9 @@ console.log('registrations:', registrations.map(({ key, options, component }) =>
 })))
 const sidebar = registrations.find((entry) => entry.key === 'sidebar.panellist')
 const main = registrations.find((entry) => entry.key === 'main')
-assert.equal(sidebar.options.id, 'bilibili-live')
+assert.equal(sidebar.options.id, 'bilibili-multiview')
 assert.equal(sidebar.options.order, 11)
 assert.equal(sidebar.options.label(), 'panel')
-assert.equal(main.options.key, 'bilibili-live')
+assert.equal(main.options.key, 'bilibili-multiview')
 assert.equal(main.options.inject().t('panel'), 'panel')
 console.log('client smoke OK')

@@ -4,18 +4,18 @@
  * The browser cannot call the Bilibili APIs directly: `api.live.bilibili.com`
  * rejects foreign origins, and the account cookie must never be handed to the
  * page. This plugin therefore exposes a tiny same-origin JSON facade under
- * `/bilibili-live` and keeps the cookie in the DSH data directory.
+ * `/bilibili-multiview` and keeps the cookie in the DSH data directory.
  *
  * Routes:
- *   GET    /bilibili-live/vendor/mpegts.js  vendored FLV player runtime
- *   GET    /bilibili-live/api/image         same-origin cover/keyframe relay
- *   GET    /bilibili-live/api/session       current account summary
- *   POST   /bilibili-live/api/session       save/validate a cookie
- *   DELETE /bilibili-live/api/session       forget the cookie
- *   POST   /bilibili-live/api/room          resolve one room + anchor
- *   POST   /bilibili-live/api/rooms         refresh several rooms
- *   POST   /bilibili-live/api/play          resolve playable FLV URLs
- *   POST   /bilibili-live/api/danmu         resolve danmaku WS hosts + token
+ *   GET    /bilibili-multiview/vendor/mpegts.js  vendored FLV player runtime
+ *   GET    /bilibili-multiview/api/image         same-origin cover/keyframe relay
+ *   GET    /bilibili-multiview/api/session       current account summary
+ *   POST   /bilibili-multiview/api/session       save/validate a cookie
+ *   DELETE /bilibili-multiview/api/session       forget the cookie
+ *   POST   /bilibili-multiview/api/room          resolve one room + anchor
+ *   POST   /bilibili-multiview/api/rooms         refresh several rooms
+ *   POST   /bilibili-multiview/api/play          resolve playable FLV URLs
+ *   POST   /bilibili-multiview/api/danmu         resolve danmaku WS hosts + token
  */
 import { createHash } from 'node:crypto'
 import { createReadStream } from 'node:fs'
@@ -32,7 +32,7 @@ export const inject = ['webServer']
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const VENDOR_FILE = path.join(HERE, 'vendor', 'mpegts.min.js')
-const ROUTE_PREFIX = '/bilibili-live'
+const ROUTE_PREFIX = '/bilibili-multiview'
 const API_MAIN = 'https://api.bilibili.com'
 const API_LIVE = 'https://api.live.bilibili.com'
 const LIVE_REFERER = 'https://live.bilibili.com/'
@@ -56,7 +56,7 @@ const COOKIE_STORE = path.join(DSH_HOME, 'bili', 'cookies.json')
 const DEBUG = process.env.DSH_BILIBILI_LIVE_DEBUG === '1'
 
 function debug(...args) {
-  if (DEBUG) console.error('[bilibili-live]', ...args)
+  if (DEBUG) console.error('[bilibili-multiview]', ...args)
 }
 
 class BiliError extends Error {
@@ -968,6 +968,6 @@ export function apply(ctx) {
           }
         },
       }),
-    'bilibili-live: Bilibili facade routes',
+    'bilibili-multiview: Bilibili facade routes',
   )
 }

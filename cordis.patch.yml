@@ -2,5 +2,5 @@
 # the mpegts.js vendor file; the package's Client half registers the sidebar
 # entry and the main panel.
 - insert:
-    - id: bilibili-live
-      name: '@local/dsh-bilibili-live'
+    - id: bilibili-multiview
+      name: 'dsh-bilibili-multiview'
