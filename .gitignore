@@ -1,0 +1,9 @@
+# Local verification screenshots (may contain account/stream content)
+artifacts/
+
+node_modules/
+.DS_Store
+*.log
+.env
+.env.*
+*.tgz

@@ -1,0 +1,58 @@
+{
+  "name": "@local/dsh-bilibili-live",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Bilibili live multiview page for DeepSeek Harness with Niri-style horizontal windows, vertical stacking, danmaku, focus-following solo, and focus ducking.",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "vendor/mpegts.min.js",
+    "vendor/mpegts.LICENSE",
+    "vendor/ws/**",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-sidebar"
+      ]
+    }
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xinrea/dsh-bilibili-multiview.git"
+  },
+  "homepage": "https://github.com/Xinrea/dsh-bilibili-multiview#readme",
+  "bugs": {
+    "url": "https://github.com/Xinrea/dsh-bilibili-multiview/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "bilibili",
+    "bilibili-live",
+    "niri",
+    "multiview",
+    "danmaku",
+    "mpegts"
+  ]
+}
