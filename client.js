@@ -1359,6 +1359,7 @@ window.__ModuleLoader__.load({
 .bl-page a{color:inherit;text-decoration:none}
 .bl-rail{display:flex;flex-direction:column;gap:10px;width:252px;flex:0 0 252px;min-width:0;min-height:0;padding:14px 12px 12px;background:var(--dsw-alias-bg-layer-1);border-right:1px solid var(--dsw-alias-border-l1);overflow:hidden;transition:width .28s cubic-bezier(.22,1,.36,1),flex-basis .28s cubic-bezier(.22,1,.36,1),padding .28s cubic-bezier(.22,1,.36,1),opacity .2s ease,border-color .2s ease}
 .bl-page.is-rail-collapsed .bl-rail{width:0;flex-basis:0;padding:0;border-right-width:0;opacity:0;pointer-events:none}
+.bl-page.is-window-edge .bl-rail{padding-top:44px}
 .bl-rail-toggle{flex:none;color:var(--dsw-alias-label-secondary)}
 .bl-rail-toggle:hover{color:var(--dsw-alias-label-primary)}
 .bl-account{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border-radius:12px;border:1px solid var(--dsw-alias-border-l1);background:var(--dsw-alias-bg-layer-2);text-align:left;transition:border-color .16s ease,background .16s ease}
@@ -1674,7 +1675,9 @@ window.__ModuleLoader__.load({
       const [animating, setAnimating] = useState(true)
       const [moveMenu, setMoveMenu] = useState(null)
       const [railCollapsed, setRailCollapsed] = useState(stored.railCollapsed)
+      const [windowEdge, setWindowEdge] = useState(false)
 
+      const pageRef = useRef(null)
       const viewportRef = useRef(null)
       const offsetRef = useRef(0)
       const rafRef = useRef(0)
@@ -1799,6 +1802,28 @@ window.__ModuleLoader__.load({
         })
         observer.observe(element)
         return () => observer.disconnect()
+      }, [])
+
+      // The desktop shell draws the native window buttons over the top-left.
+      // When the DSH sidebar is collapsed the main column reaches x=56, so the
+      // live rail's account card would sit underneath those buttons. Only the
+      // desktop shell needs the safe inset; the browser web UI has no buttons.
+      useEffect(() => {
+        const desktopShell = /Electron/i.test(navigator.userAgent)
+        const element = pageRef.current
+        if (!desktopShell || !element) return undefined
+        const update = () => {
+          const left = element.getBoundingClientRect().left
+          setWindowEdge(left < 100)
+        }
+        const observer = new ResizeObserver(update)
+        observer.observe(element)
+        window.addEventListener('resize', update)
+        update()
+        return () => {
+          observer.disconnect()
+          window.removeEventListener('resize', update)
+        }
       }, [])
 
       useEffect(() => {
@@ -2328,7 +2353,14 @@ window.__ModuleLoader__.load({
         h('style', { key: 'bilibili-multiview-style' }, CSS),
         h(
           'div',
-          { className: cx('bl-page', railCollapsed ? 'is-rail-collapsed' : null) },
+          {
+            className: cx(
+              'bl-page',
+              railCollapsed ? 'is-rail-collapsed' : null,
+              windowEdge ? 'is-window-edge' : null,
+            ),
+            ref: pageRef,
+          },
           h(
             'aside',
             {
