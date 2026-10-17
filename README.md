@@ -6,6 +6,10 @@ DSH 插件：在 DeepSeek Harness 的侧边栏「自动任务」下面增加一�
 
 > 仓库名、包 ID、Client 模块 id 与 Host 路由均为 `dsh-bilibili-multiview`；侧边栏显示名保持「bilibili 直播」。
 
+![dsh-bilibili-multiview 预览：Niri 风格多窗口与列内上下分屏](assets/preview.webp)
+
+*4 个窗口 · 3 列；列内上下分屏，直播列表已收起。*
+
 - 直播间列表可折叠：用快捷键切换/移动窗口时自动收起；也可点击播放区左上角按钮展开/收起
 - 添加 / 移除直播间、账号 Cookie 设置、封面通过 Host 同源图片代理加载
 - 播放区域按 **Niri 水平滚动窗口** 管理：滚轮、← →、Home/End、窗口圆点、底部滚动条

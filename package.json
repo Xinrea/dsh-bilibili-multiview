@@ -20,7 +20,8 @@
     "vendor/mpegts.LICENSE",
     "vendor/ws/**",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "assets/preview.webp"
   ],
   "dsh": {
     "bundle": {
