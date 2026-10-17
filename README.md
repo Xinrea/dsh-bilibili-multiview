@@ -21,6 +21,16 @@ DSH 插件：在 DeepSeek Harness 的侧边栏「自动任务」下面增加一�
 
 ## 安装
 
+### 从 npm
+
+在 DSH 插件管理器中安装 npm 包 `dsh-bilibili-multiview`；如果使用 Agent 工具：
+
+```
+plugin_manager install_bundle dsh-bilibili-multiview
+```
+
+### 从源码
+
 ```bash
 git clone git@github.com:Xinrea/dsh-bilibili-multiview.git
 ```
