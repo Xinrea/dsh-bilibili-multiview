@@ -1,6 +1,6 @@
 {
   "name": "dsh-bilibili-multiview",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Bilibili live multiview page for DeepSeek Harness with Niri-style horizontal windows, vertical stacking, danmaku, focus-following solo, and focus ducking.",
   "exports": {
